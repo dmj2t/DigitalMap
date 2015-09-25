@@ -19,10 +19,7 @@ class User extends Entity
     {
         return (new DefaultPasswordHasher)->hash($password);
     }
-    protected function _setConfirmPassword($confirm_password)
-    {
-        return (new DefaultPasswordHasher)->hash($confirm_password);
-    }
+    
     // ...
 }
 ?>

@@ -19,6 +19,14 @@ class UsersTable extends Table
             'message' => 'Username Should be at least 5 characters long',
         ]
     ])
+           ->add('username',['unique' => 
+            [
+            'rule'    => ['validateUnique'],
+            'provider' => 'table',
+            'message' => 'This username has already been taken.',
+            ]
+    ])
+    
             ->notEmpty('password', 'A password is required')
                  ->add('password', [
                 'length' => [
@@ -27,18 +35,36 @@ class UsersTable extends Table
         ]
     ])
             ->notEmpty('confirm_password', 'To confirm your password, you need to retype the new password')
-                 
+                 ->add('confirm_password', [
+                'length' => [
+                'rule' => ['minLength', 8],
+                'message' => 'Password SShould be at least 8 characters long ',
+        ]
+    ])
 	->notEmpty('email', 'An email is required')
-			  ->notEmpty('address', 'An address is required')
-			  ->notEmpty('birth_dt', 'Date of birth is required')
-			  ->notEmpty('Question1', 'Answer to question 1  is required')
-			   ->notEmpty('Question2', 'Answer to question 2  is required')
-			    ->notEmpty('Question3', 'Answer to question 3  is required')
-            ->notEmpty('role', 'A role is required')
-            ->add('role', 'inList', [
+	->notEmpty('address', 'An address is required')
+                 ->add('address', [
+                'length' => [
+                'rule' => ['minLength', 3],
+                'message' => 'Address Should be at least 3 characters long ',
+        ]
+    ])
+	->notEmpty('birth_dt', 'Date of birth is required')
+                 
+	->notEmpty('Question1', 'Answer to question 1  is required')
+                 ->add('Question1', [
+                'length' => [
+                'rule' => ['minLength', 3],
+                'message' => ' Answer Should be at least 8 characters long ',
+        ]
+    ])
+	->notEmpty('Question2', 'Answer to question 2  is required')
+	->notEmpty('Question3', 'Answer to question 3  is required')
+        ->notEmpty('role', 'A role is required');
+        /* ->add('role', 'inList', [
                 'rule' => ['inList', ['admin', 'user']],
                 'message' => 'Please enter a valid role'
-            ]);
+            ]);*/
          
 
          
@@ -106,14 +132,14 @@ class UsersTable extends Table
             ->add('password', [
                 'length' => [
                 'rule' => ['minLength', 8],
-                'message' => 'Password SShould be at least 8 characters long ',
+                'message' => 'Password Should be at least 8 characters long ',
         ]
     ])
            ->notEmpty('confirm_password', 'Confirmation of New Password Is Required')
                   ->add('confirm_password', [
                 'length' => [
                 'rule' => ['minLength', 8],
-                'message' => 'Password SShould be at least 8 characters long ',
+                'message' => 'Password Should be at least 8 characters long ',
         ]
     ]) ;
          

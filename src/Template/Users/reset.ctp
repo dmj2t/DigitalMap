@@ -8,8 +8,8 @@
   <?= $this->Form->create($user, ['context' => ['validator' => 'reset']]) ?>  
     <fieldset>
         <legend><?= __('Enter Your New Password') ?></legend>
-        <?= $this->Form->input('password',array('style'=>'float:left','label' => 'New Password'))?>
-        <?= $this->Form->input('confirm_password',array('style'=>'float:left','label' => 'Retype New Password'))?>
+        <?= $this->Form->input('password',array('label' => 'New Password'))?>
+        <?= $this->Form->input('confirm_password',array('type' =>'password','label' => 'Retype New Password'))?>
     </fieldset>
 <?= $this->Form->button(__('Submit')); ?>
 <?= $this->Form->end()?>

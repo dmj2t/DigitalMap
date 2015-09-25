@@ -18,6 +18,8 @@
     <?= $this->fetch('script') ?>
 </head>
     <body>
+<?=$this->Flash->render();?>
+<?=$this->Flash->render('auth');?>
     <div id="wrapper">
 	<div id="header-wrapper">
 		<div id="header">

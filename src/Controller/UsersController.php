@@ -24,7 +24,7 @@ class UsersController extends AppController
 {
 
 
-	public function beforeFilter(Event $event)
+public function beforeFilter(Event $event)
 {
     parent::beforeFilter($event);
     // Allow users to register and logout.
@@ -32,7 +32,9 @@ class UsersController extends AppController
     // cause problems with normal functioning of AuthComponent.
     $this->Auth->allow(['logout','register','resetPassword']);
 }
-     public function index()
+    
+
+public function index()
      {
         $this->set('users', $this->Users->find('all'));
     }
@@ -137,17 +139,53 @@ public function delete($id)
 	
 public function register()
     {
-        $user = $this->Users->newEntity();
+       
+      /*
+        $user = $this->Users->newEntity($this->request->data);
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->save($user)) {
+           // $user = $this->Users->newEntity();
+            //$user=$this->Users->patchEntity($this->request->data);
+            $connection = ConnectionManager::get('default');
+            $results = $connection->execute('SELECT * FROM users WHERE username=:user ',['user' => $this->request->data['username']])->fetchAll('assoc');
+            var_dump($results);
+            if($results)
+             {
+                 $this->Flash->error(__('Username is not available.Please try Again with different username')); 
+                  $this->set('user', $user);
+                 return $this->redirect( ['controller' => 'Users', 'action' => 'register']);
+             }
+             else{
+                 $this->Users->save($user);
+                $this->Flash->success(__('Registration Successful.Please Login to use the service.'));
+                return $this->redirect(['action' => 'login']);
+             }
+             */
+           /* if ($this->Users->save($user)) {
                 $this->Flash->success(__('Registration Successful.Please Login to use the service.'));
                 return $this->redirect(['action' => 'login']);
             }
-            $this->Flash->error(__('Unable to register.Please try Again'));
-        }
+            $this->Flash->error(__('Unable to register.Please try Again'));*/
+       // }
+         $user = $this->Users->newEntity();
+         if ($this->request->is('post')) {
+             if($this->request->data['password'] === $this->request->data['confirm_password'] )
+             {
+             $this->Users->patchEntity($user,$this->request->data);
+             
+             if($this->Users->save($user)){
+              $this->Flash->success(__('Registration Successful.Please Login to use the service.'));
+              return $this->redirect(['action' => 'login']);
+         
+             }
+             $this->Flash->error(__('Unable to register.Please see the details and try Again'));
+             }
+             $this->Flash->error(__('Unable to register.Please see the details and try Again'));
+             }
+         
+         
         $this->set('user', $user);
     }
+
 
 
 
@@ -247,6 +285,8 @@ public function resetPassword()
     {
       $user = $this->Users->newEntity();
       if ($this->request->is('post')) { 
+           if($this->request->data['password'] === $this->request->data['confirm_password'] )
+             {
           $user1 = $this->Users->newEntity(
    $this->request->data,
     ['validate' => 'reset']);
@@ -256,6 +296,10 @@ public function resetPassword()
       $usersTable->save($user);
       return $this->redirect( ['controller' => 'Users', 'action' => 'login']) ;
     }
+    $this->Flash->error(__('Password Donot Match'));
+    return $this->redirect( ['controller' => 'Users', 'action' => 'reset']) ;
+      }
+     
     $this->set('user', $user);
     }
 }
