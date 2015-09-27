@@ -34,6 +34,9 @@ public function beforeFilter(Event $event)
 }
     
 
+
+
+
 public function index()
      {
         $this->set('users', $this->Users->find('all'));

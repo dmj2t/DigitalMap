@@ -85,6 +85,10 @@ class AppController extends Controller
         $this->set(compact('user'));
         
     }
+    
+    public $view   = 'Theme';
+    public $theme = 'MyTheme';
+    
 
 }
 ?>
