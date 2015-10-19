@@ -24,10 +24,15 @@
 <div id="wrapper">
 	<div id="header-wrapper">
 		<div id="header">
-			<div id="logo">
-				<h1><a href="#">Digital Map</a></h1>
-				<p>Design by <a href="" rel="nofollow">DMJ2</a></p>
-			</div>
+                    <div id="logoimage">
+                        <?php echo $this->Html->image("/css/images/logo.png", ["alt" => "Beyond Teaching"]);?>
+                    </div>
+                    <div id="logo">
+                            <h1>
+                                <a title="" href="#">Digital Map</a>
+                            </h1>
+                    </div>
+			
                 </div>
 	</div>
 	

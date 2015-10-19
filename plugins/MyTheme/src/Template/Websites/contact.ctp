@@ -5,28 +5,31 @@
 		<ul>
 			<li><?= $this->Html->link("Homepage", array('controller' => 'Users','action'=> 'login'))?></li>
 			<li><?= $this->Html->link("About", array('controller' => 'Websites','action'=> 'about'))?></li>
-                        <li><?= $this->Html->link("Contact", array('controller' => 'Pages','action'=> 'contact'))?></li>
+                        <li><?= $this->Html->link("Contact", array('controller' => 'Websites','action'=> 'contact'))?></li>
 			
 		</ul>
 	</div>
 	<!-- end #menu -->
 <div id="page">
 <div id="content">
+                <h2>Contact Information</h2>
+                <br>
+		<p> <h2>DELHI OFFICE: </h2>
+                <p> 1497 3rd Floor <br>
+                    Bharadwaj Bhawan<br>
+                    Wazir Nagar, Kotla Mubarakpur<br>
+                    New Delhi-110003
+                 </p>
                     
-<div class="users form">
-<?= $this->Flash->render('auth') ?>
-<?= $this->Flash->render() ?>
-<?= $this->Form->create() ?>
-    <fieldset>
-        <legend><?= __('Please enter your username and password') ?></legend>
-        <?= $this->Form->input('username') ?>
-        <?= $this->Form->input('password') ?>
-    </fieldset>
-<?= $this->Form->button(__('Login')); ?>
-<?= $this->Form->end() ?>
-<?= $this->Html->link("Register ", array('controller' => 'Users','action'=> 'register'))?>
-<?= $this->Html->link(" / Reset Password", array('controller' => 'Users','action'=> 'resetPassword'))?>
-</div>
+                 </p>
+                 <br>
+                 
+                <br>
+                 <br>
+                  <br>
+                   <br>
+                    <br>
+<br>
 <br>
                 <br>
                 <br>
@@ -34,9 +37,7 @@
                 <br>
                 <br>
                 <br>
-                <br>
-                <br>
-                
+               
 		</div>
 		<!-- end #content -->
 		<div id="sidebar-bg">
@@ -51,7 +52,7 @@
 					<li>
 						<h2>Contact</h2>
 						<ul>
-                                                    <li><p>   You can contact us using the following information in the contact page.
+                                                    <li><p> You can contact us using the following information in the contact page.
                                                             
                                                         
                                                         </p></li>
@@ -61,7 +62,6 @@
 					
 					
 				</ul>
-                            <br>
 			</div>
 		</div>
                 

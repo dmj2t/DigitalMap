@@ -1,5 +1,6 @@
 <?php
 namespace App\Controller;
+
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 use App\Controller\AppController;
@@ -16,10 +17,11 @@ use Facebook\HttpClients\FacebookHttpable;
 use Facebook\HttpClients\FacebookCurlHttpClient;
 use Facebook\HttpClients\FacebookCurl; 
 use Facebook\FacebookSession;
+use Facebook\FacebookJavaScriptLoginHelper;
 use Cake\Mailer\Email;
 
 
-class UsersController extends AppController
+class SocialNetworksController extends AppController
 {
     //members
     public $paginate = [
@@ -106,71 +108,84 @@ class UsersController extends AppController
     
     
     //function to display profile of normal user.
-    public function profile()   
-    {
-        
+    public function photo()   
+            
+    {  
         FacebookSession::setDefaultApplication('495121507320772', '5dc66de4d6a39be75d0105dcdb2c6add');
+        if(isset($_SESSION['fb_token'])){
+      $session = new FacebookSession( $_SESSION['fb_token'] );
+      $request = new FacebookRequest($session, 'GET',  '/me/photos?fields=picture,likes');
+      $response = $request->execute();
+            // get response
+      $graphObject = $response->getGraphObject();
+      $graphObject = $graphObject->getPropertyAsArray('data');
+            $this->set('pic',$graphObject);
+            $user1 = $this->Auth->user('username');
+            $this->set('user1', $user1);
+            //$this->set('facebookloginurl', $helper->getLoginUrl(array( 'email', 'user_friends' )));
+            $this->set('loggedUserId',$this->Auth->user("id"));
+        }
         
-        $helper = new FacebookRedirectLoginHelper( 'http://localhost:8081/testdigitalmap/users/profile' );
-
-        try {
-
-            $session = $helper->getSessionFromRedirect();
-            } catch( FacebookRequestException $ex ) {
-            // When Facebook returns an error
-            } catch( Exception $ex ) {
-            // When validation fails or other local issues
-            }
-
-            // see if we have a session
-            if ( isset( $session ) ) {
-                $facebookloginurl= $helper->getLoginUrl(array( 'email', 'user_friends','user_photos','user_posts' ));
-                $_SESSION['fb_token'] = $session->getToken();
-                
-             //$this->request->$session->write('facebook.Token',$session);
-            // graph api request for user data
-            $request = new FacebookRequest( $session, 'GET',  '/me/friends' );
+    }      
+        public function friends()   
+            
+    {  
+        FacebookSession::setDefaultApplication('495121507320772', '5dc66de4d6a39be75d0105dcdb2c6add');
+        if(isset($_SESSION['fb_token'])){
+      $session = new FacebookSession( $_SESSION['fb_token'] );
+      $request = new FacebookRequest($session, 'GET',  '/me/friends?fields=name,id,picture');
             $response = $request->execute();
             // get response
             $graphObject = $response->getGraphObject();
 
             // print data
-           // echo  print_r( $graphObject );
-            //var_dump($graphObject->getProperty('id'));
-            $res = new FacebookRequest($session,'GET','/me/picture?type=large&redirect=false' );
-            $res = $res->execute();
-            $picture = $res->getGraphObject();
-            // var_dump($picture);
-            $this->set('picture',$picture->getProperty('url'));
+            echo  print_r( $graphObject );
+           /// var_dump($graphObject->getProperty('id'));
+            //$res = new FacebookRequest($session,'GET','/me/picture?type=large&redirect=false' );
+            //$res = $res->execute();
+           // $picture = $res->getGraphObject();
+            //$this->set('picture',$picture->getProperty('url'));
            // var_dump($picture->getProperty('url') );
-          //var_dump( $_SESSION['fb_token'] );
+          // var_dump( $picture );
            // echo print_r($session);
-			
-            //$this->request->session()->write('Facebook.Status', 'connected'); 
-            $facebookloginurl="";
-            
-             $request = new FacebookRequest($session, 'GET',  '/me/photos?fields=picture,likes');
-      $response = $request->execute();
-            // get response
-      $graphObject = $response->getGraphObject();
-      //echo print_r($graphObject);
-            } else {
-            // show login url
-            $facebookloginurl= $helper->getLoginUrl(array( 'email', 'user_friends','user_photos','user_posts' ));
             $user1 = $this->Auth->user('username');
             $this->set('user1', $user1);
             //$this->set('facebookloginurl', $helper->getLoginUrl(array( 'email', 'user_friends' )));
             $this->set('loggedUserId',$this->Auth->user("id"));
-            }
+        }
+        
+       
+}
+  
+  public function feeds()   
             
-            $user1 = $this->Auth->user('username');
+    {  
+        FacebookSession::setDefaultApplication('495121507320772', '5dc66de4d6a39be75d0105dcdb2c6add');
+        if(isset($_SESSION['fb_token'])){
+      $session = new FacebookSession( $_SESSION['fb_token'] );
+      $request = new FacebookRequest($session, 'GET',  '/me/feed');
+            $response = $request->execute();
+            // get response
+             $graphObject = $response->getGraphObject();
+      $graphObject = $graphObject->getPropertyAsArray('data');
+		 
+     // echo  print_r( $graphObject );
+      
+      
+       
+                           
+                           $this->set('feed',$graphObject);
+                           $user1 = $this->Auth->user('username');
             $this->set('user1', $user1);
+            //$this->set('facebookloginurl', $helper->getLoginUrl(array( 'email', 'user_friends' )));
             $this->set('loggedUserId',$this->Auth->user("id"));
-            $this->set('facebookloginurl',$facebookloginurl);
-            
-            
-    }
+                           
+        }
+        
+       
+}   
     
+ 
     
     public function view($id)
     {
@@ -217,8 +232,7 @@ public function verifyPassword()
     
     public function edit($id = null)
     {
-        $user=$this->Users->get($this->Auth->user('id'));
-        
+        $user=$this->Users->get($this->Auth->user('id'));;
         if($this->Auth->user('id')!= $id)
         {
             $this->Flash->error(__('You are not allowed to access that page.'));
@@ -227,14 +241,12 @@ public function verifyPassword()
         
         //var_dump($this->validationErrors);
         if ($this->request->is(['post','put'])) {
-        $this->Users->patchEntity($user, $this->request->data,['validate' => 'userUpdate']);
-        var_dump($user);
-        $this->Users->save($user);
-        
-            $this->Flash->success(__('Saved Successfully.'));
-            return $this->redirect(['action' => 'profile']);
-        
-        
+        $this->Users->patchEntity($user, $this->request->data,['validate' => 'adminUpdate']);
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('Saved Success Fully.'));
+            return $this->redirect(['action' => 'admin_profile']);
+        }
+        $this->Flash->error(__('Unable to update details.Please fill the fields correctly which are marked in red'));
     }
     $this->set('user', $user);
     $this->set('loggedUserId',$this->Auth->user("id"));
@@ -243,8 +255,7 @@ public function verifyPassword()
     
     public function delete($id)
     {
-        
-//restrict access to normal users.
+        //restrict access to normal users.
         $this->restrictAccess();
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
@@ -288,15 +299,13 @@ public function verifyPassword()
              }
              $this->Flash->error(__('Unable to register.Please see the details and try Again'));
              }
-             else{
-        
-             $this->Flash->error(__('Password Donot Match'));
+             $this->Flash->error(__('Unable to register.Please see the details and try Again'));
              }
-             }
-            $this->set('user', $user);
+         
+         
+        $this->set('user', $user);
     }
-    
-    //login function to login a user based on role.
+//login function to login a user based on role.
     public function login()
     {
         if ($this->request->is('post')) 
@@ -344,7 +353,7 @@ public function resetPassword()
                 {
                     $user = $this->Users->get($results[0]['id']);
                     $this->Auth->setUser($user);
-                    $this->Flash->success(__('Details are Correct.'));
+                 
                     return $this->redirect( ['controller' => 'Users', 'action' => 'reset']);
                 }
                 else 
@@ -381,23 +390,11 @@ public function resetPassword()
                 $usersTable = TableRegistry::get('Users');
                 $user = $usersTable->get($this->Auth->user('id'));
                 $user->password = $this->request->data['password'];
-                
-                if($usersTable->save($user))
-                {
-                    $this->Flash->success(__('Password Changed Sucessfully'));
-                    return $this->redirect( ['controller' => 'Users', 'action' => 'login']);
-                }
-                else
-                {
-                    $this->Flash->error(__('Unable To Save Details.Please Try Again Later'));
-                    return $this->redirect( ['controller' => 'Users', 'action' => 'login']); 
-                }
+                $usersTable->save($user);
+                return $this->redirect( ['controller' => 'Users', 'action' => 'login']) ;
             }
-            else
-            {
             $this->Flash->error(__('Password Donot Match'));
-            return $this->redirect( ['controller' => 'Users', 'action' => 'reset']); 
-            }
+            return $this->redirect( ['controller' => 'Users', 'action' => 'reset']) ;
         }
      
         $this->set('user', $user);

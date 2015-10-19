@@ -19,7 +19,7 @@ use Facebook\FacebookSession;
 use Cake\Mailer\Email;
 
 
-class UsersController extends AppController
+class WebsitesController extends AppController
 {
     //members
     public $paginate = [
@@ -50,7 +50,7 @@ class UsersController extends AppController
         // Allow users to register and logout.
         // You should not add the "login" action to allow list. Doing so would
         // cause problems with normal functioning of AuthComponent.
-        $this->Auth->allow(['logout','register','resetPassword']);
+        $this->Auth->allow(['about','contact']);
     }
     
     //not used function but defined for future use.
@@ -74,6 +74,14 @@ class UsersController extends AppController
         
     }
   
+    public function about()
+    {
+       
+    }
+    public function contact()
+    {
+        
+    }
     //function to load pagination to used in display of user for admin.
     public function initialize()
     {
@@ -135,16 +143,16 @@ class UsersController extends AppController
             $graphObject = $response->getGraphObject();
 
             // print data
-           // echo  print_r( $graphObject );
+            echo  print_r( $graphObject );
             //var_dump($graphObject->getProperty('id'));
             $res = new FacebookRequest($session,'GET','/me/picture?type=large&redirect=false' );
             $res = $res->execute();
             $picture = $res->getGraphObject();
-            // var_dump($picture);
+             var_dump($picture);
             $this->set('picture',$picture->getProperty('url'));
-           // var_dump($picture->getProperty('url') );
-          //var_dump( $_SESSION['fb_token'] );
-           // echo print_r($session);
+            var_dump($picture->getProperty('url') );
+          var_dump( $_SESSION['fb_token'] );
+            echo print_r($session);
 			
             //$this->request->session()->write('Facebook.Status', 'connected'); 
             $facebookloginurl="";
@@ -153,7 +161,7 @@ class UsersController extends AppController
       $response = $request->execute();
             // get response
       $graphObject = $response->getGraphObject();
-      //echo print_r($graphObject);
+      echo print_r($graphObject);
             } else {
             // show login url
             $facebookloginurl= $helper->getLoginUrl(array( 'email', 'user_friends','user_photos','user_posts' ));
@@ -170,7 +178,6 @@ class UsersController extends AppController
             
             
     }
-    
     
     public function view($id)
     {

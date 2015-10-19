@@ -1,37 +1,29 @@
 
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
- 
-<!-- File: src/Template/Articles/index.ctp -->
-
 <h1>Setting</h1>
 
 <div id="menu">
                 <ul>
-                       <li class="current_page_item"><a href="#">Settings</a></li>
-			<li ><a href="#">Profile</a></li>
+                       <li><?= $this->Html->link("Profile", array('controller' => 'Users','action'=> 'profile'))?></li>
+                        <li class="current_page_item"><?=$this->Html->link('Setting', ['action' => 'edit',$loggedUserId]);?></li>
+			<li><?= $this->Html->link("Logout", array('controller' => 'Users','action'=> 'logout'))?></li>
 			
 		</ul>
+   
+<ul class="userDetails"> Welcome <?=$user1?> </ul>
 </div>
 <div id="page">
 		
 
 <div id="content">
+<?= $this->Flash->render() ?>
 <ul>
                                         <li>
 						<h2>Sections</h2>
 						<ul>
                                                         <li>Name <?=$user;?></li>
                                                         <li>
-<?php
-echo $this->Html->link('edit', [
-    'action' => 'edit',
-    $post->id
-]); ?>
+
+<?=$this->Html->link('Change Personal Settings', ['action' => 'edit',$loggedUserId]);?> 
 </li>
 							<li><a href="#">Profile</a></li>
 							<li><a href="#">Best Picture</a></li>
@@ -49,13 +41,33 @@ echo $this->Html->link('edit', [
 			<div id="sidebar">
 				<ul>
 					<li>
-						<h2>Setting</h2>
+						<h2>Social Networks</h2>
 						<ul>
-                                                        <li>General</li>	
+                                                        <li>
+                                                        
+                                                            <?php if(isset($facebookloginurl)){$login="Login To Facebook";} else {$facebookloginurl="";$login="Logout Of Facebook";}?>
+                                                            <a href="<?=$facebookloginurl?>"><?=$login?></a>            
+                                                        </li>
+							
+							
 						</ul>
 					</li>
-					
+					<li>
+						<h2>Your Activity Info</h2>
+						<ul>
+							<li><a href="#">Active For</a></li>
+							
+						</ul>
+					</li>
+					<li>
+						<h2>Something For You</h2>
+						<ul>
+							<li><a href="#">Profile</a></li>
+							
+						</ul>
+					</li>
+
 				</ul>
 			</div>
 		</div>
-</div>
+    

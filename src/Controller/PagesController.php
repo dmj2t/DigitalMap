@@ -27,7 +27,7 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
-
+    
     /**
      * Displays a view
      *
@@ -62,4 +62,15 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
+    
+    public function about()
+    {
+       
+    }
+    public function contact()
+    {
+        
+    }
+    
 }
+?>

@@ -14,7 +14,7 @@ class UsersTable extends Table
             ->requirePresence('username')
             ->notEmpty('username', 'A username is required')
             ->add('username', [
-        'length' => [
+            'length' => [
             'rule' => ['minLength', 5],
             'message' => 'Username Should be at least 5 characters long',
         ]
@@ -31,17 +31,24 @@ class UsersTable extends Table
                  ->add('password', [
                 'length' => [
                 'rule' => ['minLength', 8],
-                'message' => 'Password SShould be at least 8 characters long ',
+                'message' => 'Password Should be at least 8 characters long ',
         ]
     ])
             ->notEmpty('confirm_password', 'To confirm your password, you need to retype the new password')
                  ->add('confirm_password', [
                 'length' => [
                 'rule' => ['minLength', 8],
-                'message' => 'Password SShould be at least 8 characters long ',
+                'message' => 'Password Should be at least 8 characters long ',
         ]
     ])
 	->notEmpty('email', 'An email is required')
+                 ->add('email',['unique' => 
+            [
+            'rule'    => ['validateUnique'],
+            'provider' => 'table',
+            'message' => 'You have already registerd this email for the service.',
+            ]
+    ])
 	->notEmpty('address', 'An address is required')
                  ->add('address', [
                 'length' => [
@@ -51,15 +58,15 @@ class UsersTable extends Table
     ])
 	->notEmpty('birth_dt', 'Date of birth is required')
                  
-	->notEmpty('Question1', 'Answer to question 1  is required')
-                 ->add('Question1', [
+	->notEmpty('question_1', 'Answer to question 1  is required')
+                 ->add('question_1', [
                 'length' => [
                 'rule' => ['minLength', 3],
                 'message' => ' Answer Should be at least 8 characters long ',
         ]
     ])
-	->notEmpty('Question2', 'Answer to question 2  is required')
-	->notEmpty('Question3', 'Answer to question 3  is required')
+	->notEmpty('question_2', 'Answer to question 2  is required')
+	->notEmpty('question_3', 'Answer to question 3  is required')
         ->notEmpty('role', 'A role is required');
         /* ->add('role', 'inList', [
                 'rule' => ['inList', ['admin', 'user']],
@@ -98,9 +105,9 @@ class UsersTable extends Table
 	->notEmpty('email', 'An email is required')
 	->notEmpty('address', 'An address is required')
 	->notEmpty('birth_dt', 'Date of birth is required')
-	->allowEmpty('Question1', 'Answer to question 1  is required')
-	->allowEmpty('Question2', 'Answer to question 2  is required')
-	->allowEmpty('Question3', 'Answer to question 3  is required');
+	->allowEmpty('question_1', 'Answer to question 1  is required')
+	->allowEmpty('question_2', 'Answer to question 2  is required')
+	->allowEmpty('question_3', 'Answer to question 3  is required');
          return $validator;
        
  
@@ -147,6 +154,38 @@ class UsersTable extends Table
        
          return $validator;
         
+			
+    }
+    
+    public function validationUserUpdate(Validator $validator)
+    {
+         $validator
+            ->requirePresence('username')
+            ->notEmpty('username', 'A username is required')
+            ->add('username', [
+        'length' => [
+            'rule' => ['minLength', 5],
+            'message' => 'Username Should be at least 5 characters long',
+        ]
+    ])
+            ->notEmpty('password', 'A password is required')
+                 ->add('password', [
+                'length' => [
+                'rule' => ['minLength', 8],
+                'message' => 'Password Should be at least 8 characters long ',
+        ]
+    ])
+                 
+	->notEmpty('email', 'An email is required')
+	->notEmpty('address', 'An address is required')
+	->notEmpty('birth_dt', 'Date of birth is required')
+	->notEmpty('question_1', 'Answer to question 1  is required')
+	->notEmpty('question_2', 'Answer to question 2  is required')
+	->notEmpty('question_3', 'Answer to question 3  is required');
+         
+         return $validator;
+       
+ 
 			
     }
 

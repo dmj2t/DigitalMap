@@ -64,6 +64,7 @@ img.aligncenter {
 }
 
 #wrapper {
+        
 	margin: 0 auto;
 	padding: 0;
 }
@@ -123,6 +124,16 @@ img.aligncenter {
 	color: #FFFFFF;
 }
 
+/* logoimg */
+#logoimage img {
+	width: 100px;
+	height: 50px;
+	margin: 0px auto;
+	padding: 80px 0px 0px 0px;
+	color: #FFFFFF;
+        float: left;
+}
+
 /* Search */
 
 #search {
@@ -174,11 +185,22 @@ img.aligncenter {
 	list-style: none;
 	line-height: normal;
 }
-
+#menu .userDetails {
+    float: right;
+    padding: 20;
+    list-style: none;
+    line-height: normal;
+}
 #menu li {
 	float: left;
 	margin-right: 1px;
 }
+#menu li h1 {
+        float: right;
+	margin-right: 1px;
+	font-size: 1em;
+}
+
 
 #menu a {
 	display: block;
@@ -214,6 +236,7 @@ img.aligncenter {
 
 #page {
 	width: 980px;
+        //overflow:hidden;
 	margin: 0px auto;
 	padding: 0px;
 }
@@ -223,7 +246,16 @@ img.aligncenter {
 #content {
 	float: right;
 	width: 590px;
+        //min-height:1200px;
 	padding: 30px 30px 0px 30px;
+	background: #FFFFFF url(images/content-bg-bottom.png) no-repeat left bottom;
+}
+
+.content_other {
+	float: left;
+	width: 980px;
+        //min-height:1200px;
+	padding: 0;
 	background: #FFFFFF url(images/content-bg-bottom.png) no-repeat left bottom;
 }
 
@@ -275,14 +307,17 @@ img.aligncenter {
 /* Sidebar */
 
 #sidebar-bg {
+       // min-height:1200px;
 	float: left;
 	width: 330px;
 	background: url(images/sidebar-shadow-bg.png) repeat-y left top;
 }
 
 #sidebar {
-	overflow: hidden;
+	//overflow: hidden;
 	width: 270px;
+       // min-height:1200px;
+        
 	padding: 30px 30px 20px 30px;
 	background: url(images/sidebar-bg-bottom.png) no-repeat left bottom;
 }
